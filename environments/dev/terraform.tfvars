@@ -2,14 +2,14 @@ subscription_id       = "00000000-0000-0000-0000-000000000000"
 tenant_id             = "00000000-0000-0000-0000-000000000000"
 location              = "Central India"
 resource_group_name   = "rg-enterprise-dev"
-storage_account_name  = "stenterprisedev001" # Must be globally unique.
+storage_account_name  = "stenterprisedev001" # Replace with a globally unique name if unavailable.
 storage_replication_type = "LRS"
 
 app_registration_name = "app-enterprise-dev"
 app_redirect_uris     = []
 
 security_group_name        = "sg-enterprise-dev"
-security_group_description = "Enterprise application users - Dev"
+security_group_description = "Enterprise application users - DEV"
 
 users = {
   user01 = {
@@ -24,6 +24,5 @@ users = {
   }
 }
 
-# Do not commit the real password. Set TF_VAR_initial_user_password in your shell/CI secret.
 force_password_change  = true
 app_registration_role = "Contributor"

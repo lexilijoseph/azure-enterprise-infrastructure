@@ -6,7 +6,6 @@
 crash.log
 crash.*.log
 *.auto.tfvars
-terraform.tfvars
 !terraform.tfvars.example
 *.pem
 *.key
