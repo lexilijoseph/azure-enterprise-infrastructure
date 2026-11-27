@@ -41,3 +41,14 @@ module "role_assignment" {
   role_definition_name = var.app_registration_role
   depends_on           = [module.resource_group, module.app_registration]
 }
+data "azuread_domains" "tenant" {
+  include_unverified = true
+}
+
+locals {
+  verified_custom_domain = one([
+    for domain in data.azuread_domains.tenant.domains :
+    domain.domain_name
+    if domain.domain_name == var.custom_domain_name && domain.verified
+  ])
+}

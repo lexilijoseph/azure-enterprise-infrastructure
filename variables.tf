@@ -94,3 +94,8 @@ variable "app_registration_role" {
   type        = string
   default     = "Contributor"
 }
+
+variable "custom_domain_name" {
+  description = "Verified Microsoft Entra custom domain."
+  type        = string
+}
