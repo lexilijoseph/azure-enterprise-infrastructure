@@ -1,0 +1,94 @@
+name: Terraform CD and Pull Request
+
+on:
+  workflow_dispatch:
+    inputs:
+      source_branch:
+        description: "Existing branch containing the Terraform changes"
+        required: true
+        type: string
+      target_branch:
+        description: "Target branch"
+        required: true
+        type: choice
+        options: [dev, test, main]
+  push:
+    branches: [dev, test, main]
+
+permissions:
+  contents: read
+  pull-requests: write
+  id-token: write
+
+concurrency:
+  group: terraform-cd-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  create-pull-request:
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.source_branch }}
+          fetch-depth: 0
+
+      - name: Create Pull Request
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SOURCE_BRANCH: ${{ inputs.source_branch }}
+          TARGET_BRANCH: ${{ inputs.target_branch }}
+        run: |
+          set -euo pipefail
+          if gh pr list --head "$SOURCE_BRANCH" --base "$TARGET_BRANCH" --state open --json number --jq 'length' | grep -q '^0$'; then
+            gh pr create \
+              --head "$SOURCE_BRANCH" \
+              --base "$TARGET_BRANCH" \
+              --title "Terraform infrastructure: ${SOURCE_BRANCH} -> ${TARGET_BRANCH}" \
+              --body "Automated PR created by Terraform CD. Terraform CI must pass and required reviewers must approve before merge."
+          else
+            echo "An open PR already exists for ${SOURCE_BRANCH} -> ${TARGET_BRANCH}."
+          fi
+
+  deploy:
+    if: github.event_name == 'push' && contains(fromJSON('["dev","test","main"]'), github.ref_name)
+    runs-on: ubuntu-latest
+    environment: ${{ github.ref_name == 'main' && 'prod' || github.ref_name }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Resolve deployment environment
+        id: env
+        shell: bash
+        run: |
+          if [[ "${GITHUB_REF_NAME}" == "main" ]]; then
+            echo "name=prod" >> "$GITHUB_OUTPUT"
+          else
+            echo "name=${GITHUB_REF_NAME}" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "1.9.8"
+
+      - name: Azure login using GitHub OIDC
+        uses: azure/login@v2
+        with:
+          client-id: ${{ vars.AZURE_CLIENT_ID }}
+          tenant-id: ${{ vars.AZURE_TENANT_ID }}
+          subscription-id: ${{ vars.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Terraform init
+        run: terraform init -input=false -backend-config="environments/${{ steps.env.outputs.name }}/backend.hcl"
+
+      - name: Terraform plan
+        env:
+          TF_VAR_initial_user_password: ${{ secrets.TF_VAR_INITIAL_USER_PASSWORD }}
+        run: terraform plan -input=false -no-color -var-file="environments/${{ steps.env.outputs.name }}/terraform.tfvars" -out="${{ steps.env.outputs.name }}.tfplan"
+
+      - name: Terraform apply
+        run: terraform apply -input=false -auto-approve "${{ steps.env.outputs.name }}.tfplan"
