@@ -15,10 +15,10 @@ module "storage_account" {
 }
 
 module "users" {
-  source                  = "./modules/users"
-  users                   = var.users
-  initial_password        = var.initial_user_password
-  force_password_change   = var.force_password_change
+  source                = "./modules/users"
+  users                 = var.users
+  initial_password      = var.initial_user_password
+  force_password_change = var.force_password_change
 }
 
 module "security_group" {
@@ -29,15 +29,15 @@ module "security_group" {
 }
 
 module "app_registration" {
-  source           = "./modules/app-registration"
-  display_name     = var.app_registration_name
-  redirect_uris    = var.app_redirect_uris
+  source        = "./modules/app-registration"
+  display_name  = var.app_registration_name
+  redirect_uris = var.app_redirect_uris
 }
 
 module "role_assignment" {
-  source              = "./modules/role-assignment"
-  scope               = module.resource_group.id
-  principal_id        = module.app_registration.service_principal_object_id
+  source               = "./modules/role-assignment"
+  scope                = module.resource_group.id
+  principal_id         = module.app_registration.service_principal_object_id
   role_definition_name = var.app_registration_role
-  depends_on          = [module.resource_group, module.app_registration]
+  depends_on           = [module.resource_group, module.app_registration]
 }

@@ -1,3 +1,4 @@
+
 variable "subscription_id" {
   description = "Azure subscription ID."
   type        = string
@@ -15,23 +16,32 @@ variable "location" {
 }
 
 variable "resource_group_name" {
-  description = "Resource group name."
+  description = "Azure Resource Group name."
   type        = string
 }
 
 variable "storage_account_name" {
-  description = "Globally unique 3-24 character lowercase storage account name."
+  description = "Globally unique 3-24 character lowercase Storage Account name."
   type        = string
+
   validation {
     condition     = can(regex("^[a-z0-9]{3,24}$", var.storage_account_name))
-    error_message = "Storage account name must be 3-24 lowercase letters or numbers."
+    error_message = "Storage Account name must contain 3-24 lowercase letters or numbers."
   }
 }
 
 variable "storage_replication_type" {
-  description = "Storage redundancy: LRS, ZRS, GRS or RAGRS."
+  description = "Storage redundancy: LRS, ZRS, GRS, RAGRS or GZRS."
   type        = string
   default     = "LRS"
+
+  validation {
+    condition = contains(
+      ["LRS", "ZRS", "GRS", "RAGRS", "GZRS", "RAGZRS"],
+      var.storage_replication_type
+    )
+    error_message = "Invalid Storage Account replication type."
+  }
 }
 
 variable "app_registration_name" {
@@ -58,6 +68,7 @@ variable "security_group_description" {
 
 variable "users" {
   description = "Users to create. Keys are stable Terraform identifiers."
+
   type = map(object({
     display_name        = string
     user_principal_name = string
@@ -66,7 +77,7 @@ variable "users" {
 }
 
 variable "initial_user_password" {
-  description = "Temporary initial password for created users. Supply through TF_VAR_initial_user_password or a secret manager."
+  description = "Temporary initial password for created users."
   type        = string
   sensitive   = true
 }
@@ -78,7 +89,7 @@ variable "force_password_change" {
 }
 
 variable "app_registration_role" {
-  description = "Azure RBAC role assigned to the app's service principal at the resource-group scope."
+  description = "Azure RBAC role assigned to the app's service principal."
   type        = string
   default     = "Contributor"
 }
