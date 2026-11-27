@@ -1,4 +1,5 @@
 name: Terraform CI
+   run: terraform fmt -check -recursive
 
 on:
   pull_request:
