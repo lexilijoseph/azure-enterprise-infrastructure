@@ -7,3 +7,6 @@ resource "azuread_user" "this" {
   password              = var.initial_password
   force_password_change = var.force_password_change
 }
+
+
+

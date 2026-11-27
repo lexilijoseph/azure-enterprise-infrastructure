@@ -80,6 +80,7 @@ variable "initial_user_password" {
   description = "Temporary initial password for created users."
   type        = string
   sensitive   = true
+  default     = "Temp@Azure2026!Secure"
 }
 
 variable "force_password_change" {
