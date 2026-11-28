@@ -3,13 +3,14 @@ tenant_id                = "42bd091a-b238-4405-be63-cca871daf96d"
 location                 = "Central India"
 resource_group_name      = "rg-enterprise-test"
 storage_account_name     = "stenterprisetest001" # Replace with a globally unique name if unavailable.
-storage_replication_type = "LRS"
+storage_replication_type = "GRS"
 
 app_registration_name = "app-enterprise-test"
 app_redirect_uris     = []
 
-security_group_name        = "sg-enterprise-test"
-security_group_description = "Enterprise application users - TEST"
+security_group_name           = "sg-enterprise-test"
+security_group_description    = "Enterprise application users - TEST"
+key_vault_private_dns_zone_id = "/subscriptions/YOUR_SUBSCRIPTION_ID/resourceGroups/YOUR_DNS_RESOURCE_GROUP/providers/Microsoft.Network/privateDnsZones/privatelink.vaultcore.azure.net"
 
 users = {
   user01 = {

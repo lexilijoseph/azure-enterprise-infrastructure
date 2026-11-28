@@ -3,7 +3,7 @@ tenant_id                = "42bd091a-b238-4405-be63-cca871daf96d"
 location                 = "Central India"
 resource_group_name      = "rg-enterprise-dev"
 storage_account_name     = "stenterprisedev001" # Must be globally unique.
-storage_replication_type = "LRS"
+storage_replication_type = "GRS"
 
 app_registration_name = "app-enterprise-dev"
 app_redirect_uris     = []

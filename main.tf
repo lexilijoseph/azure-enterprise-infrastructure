@@ -6,12 +6,16 @@ module "resource_group" {
 }
 
 module "storage_account" {
-  source                   = "./modules/storage-account"
-  name                     = var.storage_account_name
-  resource_group_name      = module.resource_group.name
-  location                 = module.resource_group.location
-  account_replication_type = var.storage_replication_type
-  tags                     = local.common_tags
+  source                        = "./modules/storage-account"
+  name                          = var.storage_account_name
+  resource_group_name           = module.resource_group.name
+  location                      = module.resource_group.location
+  account_replication_type      = var.storage_replication_type
+  tags                          = local.common_tags
+  private_endpoint_subnet_id    = var.private_endpoint_subnet_id
+  private_dns_zone_id           = var.private_dns_zone_id
+  key_vault_private_dns_zone_id = var.key_vault_private_dns_zone_id
+
 }
 
 module "users" {
@@ -52,3 +56,4 @@ locals {
     if domain.domain_name == var.custom_domain_name && domain.verified
   ])
 }
+

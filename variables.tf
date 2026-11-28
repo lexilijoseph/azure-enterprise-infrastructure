@@ -33,7 +33,7 @@ variable "storage_account_name" {
 variable "storage_replication_type" {
   description = "Storage redundancy: LRS, ZRS, GRS, RAGRS or GZRS."
   type        = string
-  default     = "LRS"
+  default     = "GRS"
 
   validation {
     condition = contains(
@@ -97,5 +97,20 @@ variable "app_registration_role" {
 
 variable "custom_domain_name" {
   description = "Verified Microsoft Entra custom domain."
+  type        = string
+}
+
+variable "private_endpoint_subnet_id" {
+  description = "Subnet ID for storage private endpoint"
+  type        = string
+}
+
+variable "private_dns_zone_id" {
+  description = "Private DNS zone ID for storage blob"
+  type        = string
+}
+
+variable "key_vault_private_dns_zone_id" {
+  description = "Private DNS zone ID for Azure Key Vault"
   type        = string
 }
