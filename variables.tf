@@ -28,11 +28,11 @@ variable "storage_account_name" {
   }
 }
 
-variable "storage_replication_type" {
-  description = "Storage redundancy: LRS, ZRS, GRS or RAGRS."
-  type        = string
-  default     = "LRS"
-}
+#variable "storage_replication_type" {
+# description = "Storage redundancy: LRS, ZRS, GRS or RAGRS."
+# type        = string
+# default     = "LRS"
+#}
 
 variable "app_registration_name" {
   description = "Microsoft Entra application display name."
@@ -82,3 +82,57 @@ variable "app_registration_role" {
   type        = string
   default     = "Contributor"
 }
+
+variable "storage_replication_type" {
+  description = "Geo-redundant or zone-redundant Storage Account replication"
+  type        = string
+  default     = "GRS"
+
+  validation {
+    condition = contains(
+      ["GRS", "RAGRS", "ZRS", "GZRS", "RAGZRS"],
+      var.storage_replication_type
+    )
+    error_message = "Storage replication must be GRS, RAGRS, ZRS, GZRS or RAGZRS."
+  }
+}
+
+variable "private_endpoint_subnet_id" {
+  description = "Private endpoint subnet resource ID"
+  type        = string
+  default     = null
+}
+
+variable "private_dns_zone_id" {
+  description = "Storage Blob private DNS zone resource ID"
+  type        = string
+  default     = null
+}
+
+variable "key_vault_private_dns_zone_id" {
+  description = "Key Vault private DNS zone resource ID"
+  type        = string
+  default     = null
+}
+
+
+variable "vnet_name" {
+  description = "Virtual Network name"
+  type        = string
+}
+
+variable "vnet_address_space" {
+  description = "Virtual Network address space"
+  type        = list(string)
+}
+
+variable "private_endpoint_subnet_name" {
+  description = "Private endpoint subnet name"
+  type        = string
+}
+
+variable "private_endpoint_subnet_prefixes" {
+  description = "Private endpoint subnet address prefixes"
+  type        = list(string)
+}
+

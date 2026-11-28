@@ -5,6 +5,17 @@ module "resource_group" {
   tags     = local.common_tags
 }
 
+module "network" {
+  source              = "./modules/network"
+  resource_group_name = module.resource_group.name
+  location            = module.resource_group.location
+  vnet_name           = var.vnet_name
+  address_space       = var.vnet_address_space
+  subnet_name         = var.private_endpoint_subnet_name
+  subnet_prefixes     = var.private_endpoint_subnet_prefixes
+  tags                = local.common_tags
+}
+
 module "storage_account" {
   source                   = "./modules/storage-account"
   name                     = var.storage_account_name
@@ -12,6 +23,13 @@ module "storage_account" {
   location                 = module.resource_group.location
   account_replication_type = var.storage_replication_type
   tags                     = local.common_tags
+
+  # Automatically pass network resource IDs
+  private_endpoint_subnet_id    = module.network.private_endpoint_subnet_id
+  private_dns_zone_id           = module.network.storage_blob_private_dns_zone_id
+  key_vault_private_dns_zone_id = module.network.key_vault_private_dns_zone_id
+
+  depends_on = [module.network]
 }
 
 module "users" {
@@ -41,3 +59,5 @@ module "role_assignment" {
   role_definition_name = var.app_registration_role
   depends_on           = [module.resource_group, module.app_registration]
 }
+
+

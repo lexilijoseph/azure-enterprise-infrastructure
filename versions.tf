@@ -16,5 +16,5 @@ terraform {
   # terraform init -backend=false
   # terraform apply -var-file="environments/dev/terraform.tfvars"
   # terraform init -migrate-state -backend-config="environments/dev/backend.hcl"
-  backend "azurerm" {}
+  # backend "azurerm" {}
 }
