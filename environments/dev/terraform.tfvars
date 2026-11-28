@@ -22,6 +22,9 @@ app_redirect_uris     = []
 security_group_name        = "sg-enterprise-dev"
 security_group_description = "Enterprise application users - DEV"
 
+github_owner      = "YOUR-GITHUB-USERNAME-OR-ORG"
+github_repository = "azure-enterprise-infrastructure"
+
 # Users
 users = {
   user01 = {

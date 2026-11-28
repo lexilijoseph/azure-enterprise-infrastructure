@@ -136,3 +136,12 @@ variable "private_endpoint_subnet_prefixes" {
   type        = list(string)
 }
 
+variable "github_owner" {
+  description = "GitHub username or organization"
+  type        = string
+}
+
+variable "github_repository" {
+  description = "GitHub repository name"
+  type        = string
+}

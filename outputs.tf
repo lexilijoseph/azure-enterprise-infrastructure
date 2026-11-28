@@ -37,3 +37,13 @@ output "created_users" {
   description = "Created users, keyed by the Terraform map key."
   value       = module.users.user_principal_names
 }
+
+output "github_actions_client_id" {
+  description = "Azure Client ID generated for GitHub Actions"
+  value       = module.github_oidc.client_id
+}
+
+output "github_actions_service_principal_id" {
+  description = "GitHub Actions Service Principal Object ID"
+  value       = module.github_oidc.service_principal_object_id
+}

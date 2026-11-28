@@ -1,5 +1,5 @@
-subscription_id = "a8d34578-fbeb-4cb3-b3b1-fd0092bf136c"
-tenant_id       = "42bd091a-b238-4405-be63-cca871daf96d"
+subscription_id          = "a8d34578-fbeb-4cb3-b3b1-fd0092bf136c"
+tenant_id                = "42bd091a-b238-4405-be63-cca871daf96d"
 location                 = "Central India"
 resource_group_name      = "rg-enterprise-test"
 storage_account_name     = "stenterprisetest001" # Replace with a globally unique name if unavailable.

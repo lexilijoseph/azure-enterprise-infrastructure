@@ -60,4 +60,16 @@ module "role_assignment" {
   depends_on           = [module.resource_group, module.app_registration]
 }
 
+# GitHub Actions OIDC module
+module "github_oidc" {
+  source = "./modules/github-oidc"
 
+  application_name = "app-github-actions-terraform"
+
+  github_owner      = var.github_owner
+  github_repository = var.github_repository
+
+  github_environments = ["dev", "test", "prod"]
+
+  scope = module.resource_group.id
+}
