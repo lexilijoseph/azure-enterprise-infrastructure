@@ -1,8 +1,8 @@
-subscription_id       = "00000000-0000-0000-0000-000000000000"
-tenant_id             = "00000000-0000-0000-0000-000000000000"
-location              = "Central India"
-resource_group_name   = "rg-enterprise-prod"
-storage_account_name  = "stenterpriseprod001" # Replace with a globally unique name if unavailable.
+subscription_id          = "00000000-0000-0000-0000-000000000000"
+tenant_id                = "00000000-0000-0000-0000-000000000000"
+location                 = "Central India"
+resource_group_name      = "rg-enterprise-prod"
+storage_account_name     = "stenterpriseprod001" # Replace with a globally unique name if unavailable.
 storage_replication_type = "LRS"
 
 app_registration_name = "app-enterprise-prod"
@@ -24,5 +24,5 @@ users = {
   }
 }
 
-force_password_change  = true
+force_password_change = true
 app_registration_role = "Contributor"

@@ -1,8 +1,8 @@
-subscription_id       = "a8d34578-fbeb-4cb3-b3b1-fd0092bf136c"
-tenant_id             = "42bd091a-b238-4405-be63-cca871daf96d"
-location              = "Central India"
-resource_group_name   = "rg-enterprise-dev"
-storage_account_name  = "stenterprisedev001" # Must be globally unique.
+subscription_id          = "a8d34578-fbeb-4cb3-b3b1-fd0092bf136c"
+tenant_id                = "42bd091a-b238-4405-be63-cca871daf96d"
+location                 = "Central India"
+resource_group_name      = "rg-enterprise-dev"
+storage_account_name     = "stenterprisedev001" # Must be globally unique.
 storage_replication_type = "LRS"
 
 app_registration_name = "app-enterprise-dev"
@@ -25,5 +25,5 @@ users = {
 }
 
 # Do not commit the real password. Set TF_VAR_initial_user_password in your shell/CI secret.
-force_password_change  = true
+force_password_change = true
 app_registration_role = "Contributor"
